@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAROHAN 2025 Schedule Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 50%, #2a2a6a 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #2a9df4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #2a9df4 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 4, 40, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 4, 40, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
+        }
+        
+        .download-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #2a9df4 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 4, 40, 0.4);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 4, 40, 0.6);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        #scheduleTable {
+            background: white;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .day-section {
+            margin-bottom: 40px;
+        }
+        
+        .day-title {
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #2a9df4 100%);
+            color: white;
+            padding: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-width: 800px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #000428 0%, #004e92 50%, #2a9df4 100%);
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            position: relative;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            font-size: 0.85em;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        
+        tr:hover {
+            background-color: #f0f0ff;
+        }
+        
+        td:first-child {
+            font-weight: bold;
+            color: #004e92;
+            white-space: nowrap;
+        }
+        
+        .editable {
+            outline: none;
+            min-height: 20px;
+        }
+        
+        .selected {
+            background-color: rgba(0, 78, 146, 0.3) !important;
+            border: 2px solid #004e92 !important;
+        }
+        
+        .merge-selected {
+            background-color: rgba(243, 156, 18, 0.3) !important;
+            border: 2px solid #f39c12 !important;
+        }
+        
+        .merged {
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #004e92;
+            margin-top: 10px;
+        }
+        
+        .cell-controls {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px;
+            border-radius: 0 0 0 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        
+        td:hover .cell-controls, th:hover .cell-controls {
+            display: block;
+        }
+        
+        .cell-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px 5px;
+            color: #004e92;
+        }
+        
+        .cell-btn:hover {
+            color: #2a9df4;
+        }
+        
+        .merge-options {
+            display: none;
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .merge-options.show {
+            display: block;
+        }
+        
+        .merge-info {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-group {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AAROHAN 2025 🚀</h1>
+        <p class="subtitle">Complete TechFest Schedule Editor - October 10-12, 2025</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button class="btn btn-success" id="addRowBtn">Add Row Below</button>
+                <button class="btn btn-danger" id="deleteRowBtn">Delete Row</button>
+                <button class="btn btn-success" id="addColumnBtn">Add Column Right</button>
+                <button class="btn btn-danger" id="deleteColumnBtn">Delete Column</button>
+            </div>
+            <div class="control-group">
+                <button class="btn btn-warning" id="mergeCellsBtn">Merge Cells</button>
+                <button class="btn" id="splitCellsBtn">Split Cells</button>
+                <button class="btn" id="clearSelectionBtn">Clear Selection</button>
+            </div>
+        </div>
+        
+        <button class="download-btn" onclick="downloadAsPDF()">📥 Download Schedule as PDF</button>
+        <div class="loading" id="loading">Generating PDF, please wait...</div>
+        
+        <div id="scheduleTable">
+            <!-- Tables will be generated here -->
+        </div>
+    </div>
+
+    <div class="merge-options" id="mergeOptions">
+        <p>Select cells to merge (Ctrl+Click to select multiple):</p>
+        <div class="merge-info" id="mergeInfo">No cells selected</div>
+        <div class="control-group">
+            <button class="btn btn-success" id="mergeThemBtn">Merge Them</button>
+            <button class="btn btn-danger" id="cancelMergeBtn">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Data structure for the schedule based on the PDF
+        const scheduleData = {
+            days: [
+                {
+                    title: "DAY 1 - 10th October 2025",
+                    headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
+                    rows: [
+                        ["09:30 – 11:00", "Registration & Kit Distribution", "", "", "", "", ""],
+                        ["10:00 – 11:00", "TRL 1, 2, 3", "Departmental Visits", "", "", "", ""],
+                        ["10:15 – 11:20", "Inaugural Session", "", "", "", "", ""],
+                        ["10:15 – 10:30", "Lamp Lighting", "", "", "", "", ""],
+                        ["10:31 – 10:41", "Address by Director", "", "", "", "", ""],
+                        ["10:42 – 11:07", "Keynote Talk: Journey from Idea to Prototype", "", "", "", "", ""],
+                        ["11:08 – 11:18", "Chief Guest Address", "", "", "", "", ""],
+                        ["11:21 – 11:41", "Tea / Coffee Networking (Guests Only)", "", "", "", "", ""],
+                        ["11:30 – 01:00", "Poster Display & Concept Presentations", "", "", "", "", ""],
+                        ["11:00 – 11:30", "", "", "Expo Inauguration", "", "", ""],
+                        ["11:30 – 06:00", "", "", "Industry Expo Showcase", "", "", ""],
+                        ["11:00 – 03:00", "", "", "", "Roborace & Other Games", "", ""],
+                        ["01:00 – 02:00", "Lunch Break (Jury: Dining Hall)", "", "", "", "", ""],
+                        ["02:00 – 03:30", "Prototype Demonstrations (Labs / Exhibition Area)", "", "", "", "", ""],
+                        ["03:31 – 03:50", "Expert Talk 1: Moving from TRL 1-3 to TRL 4-6", "", "", "", "", ""],
+                        ["03:51 – 04:10", "Expert Talk 2: Challenges in Translating Ideas into Prototypes", "", "", "", "", ""],
+                        ["04:11 – 04:20", "Announcements: Best Early-Stage Prototypes", "", "", "", "", ""],
+                        ["04:21 – 05:00", "Tea Break & Networking (For All)", "", "", "", "", ""],
+                        ["10:00 – 05:00", "", "Departmental Visits", "", "", "", ""]
+                    ]
+                },
+                {
+                    title: "DAY 2 - 11th October 2025",
+                    headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
+                    rows: [
+                        ["09:00 – 09:00", "Entry Starts", "", "", "", "", ""],
+                        ["09:00 – 10:00", "Registration (New Entrants)", "", "", "", "Registration", ""],
+                        ["09:30 – 09:45", "Recap of Day 1 + Welcome to Day 2", "", "", "", "", ""],
+                        ["09:45 – 10:15", "Keynote Talk: Scaling Innovations", "", "", "", "", ""],
+                        ["10:00 – 10:15", "Inauguration (Investors Connect)", "", "", "", "", ""],
+                        ["10:00 – 10:45", "", "", "", "", "Inauguration (GJ)", ""],
+                        ["10:00 – 11:00", "", "", "", "", "Inauguration Ceremony", ""],
+                        ["10:15 – 10:30", "Address by Chairman, Institute Innovation Council", "", "", "", "", ""],
+                        ["10:16 – 10:26", "Address by Director", "", "", "", "", ""],
+                        ["10:27 – 10:37", "Address by CEO, SIF", "", "", "", "", ""],
+                        ["10:30 – 11:00", "Tea Break", "", "", "", "", ""],
+                        ["10:38 – 11:14", "Tea Break (Investors Connect)", "", "", "", "", ""],
+                        ["10:00 – 05:00", "TRL 4, 5, 6", "Departmental Visits", "", "", "", ""],
+                        ["10:00 – 06:00", "", "", "Industry Expo Showcase", "", "", ""],
+                        ["11:00 – 06:00", "", "", "Industry Expo Showcase (Basketball Ground)", "", "", ""],
+                        ["11:00 – 11:45", "", "", "", "", "High Tea (GJ)", ""],
+                        ["11:00 – 03:00", "", "", "", "Roborace & Other Games", "", ""],
+                        ["11:15 – 01:00", "Startup Pitching Sessions 1 & 2", "", "", "", "", ""],
+                        ["11:30 – 01:00", "Demonstrations of Functional Prototypes & Lab-Tested Models", "", "", "", "Plenary Sessions (LT)", "Plenary Sessions (LT)"],
+                        ["01:00 – 02:00", "Lunch Break", "", "", "", "Lunch Break & Networking (Experts)", ""],
+                        ["02:01 – 03:30", "Prototype Showcase (TRL 7-9)", "", "", "", "", ""],
+                        ["02:01 – 03:45", "Startup Pitching Sessions 3 & 4", "", "", "", "", ""],
+                        ["02:00 – 02:45", "", "", "", "", "IEEE Inauguration (LT)", ""],
+                        ["02:00 – 05:00", "", "", "", "", "IEEE Events + Student Conference", ""],
+                        ["03:00 – 05:00", "Panel Discussion: Startup Opportunities in Defence & Space-Tech", "", "", "", "", ""],
+                        ["03:31 – 04:30", "Panel Discussion: Startup Opportunities in Agri-Tech, Clean-Tech & Sustainability", "", "", "", "", ""],
+                        ["03:46 – 04:15", "Tea Break (Investors Connect)", "", "", "", "", ""],
+                        ["03:30 – 03:45", "", "", "", "", "Tea Break", ""],
+                        ["04:00 – 05:30", "One-on-One Interaction: Startups & Investors", "", "", "", "", ""],
+                        ["04:31 – 04:40", "Awards Announcements: Best TRL 4-6 & TRL 7-9 Prototypes", "", "", "", "", ""],
+                        ["04:00 – 05:00", "", "", "", "", "Awards and Vote of Thanks", ""],
+                        ["04:41 – 05:00", "Tea Break & Networking", "", "", "", "", ""]
+                    ]
+                },
+                {
+                    title: "DAY 3 - 12th October 2025",
+                    headers: ["Time", "PRARUPAM", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "CULTURAL EVENING", "INVITED TALKS"],
+                    rows: [
+                        ["10:00 – 11:00", "", "", "", "Expert Talk (GJ)", "", ""],
+                        ["10:00 – 05:00", "TRL 7, 8, 9", "", "", "IEEE Student Conference (LT)", "", ""],
+                        ["10:00 – 06:00", "", "Industry Expo Showcase (Basketball Ground)", "", "", "", ""],
+                        ["11:00 – 02:00", "", "", "Roborace & Other Games", "", "", ""],
+                        ["11:30 – 01:00", "", "", "", "Oral Presentations - Student Conference (LT)", "", ""],
+                        ["01:00 – 02:00", "", "", "", "Lunch", "", ""],
+                        ["02:00 – 03:30", "", "", "", "IEEE Poster Presentation (Silveria)", "", ""],
+                        ["03:30 – 03:45", "", "", "", "Tea Break", "", ""],
+                        ["04:00 – 05:00", "Awards Ceremony: IEEE, Roborace, Prarupam", "", "", "Awards Ceremony: IEEE, Roborace, Prarupam", "", ""],
+                        ["05:00 – 08:00", "", "", "", "", "Cultural Evening (Cricket Ground)", ""]
+                    ]
+                }
+            ]
+        };
+
+        // State management
+        let selectedCells = [];
+        let mergeMode = false;
+        let cellsToMerge = []; // Now stores coordinates instead of DOM elements
+        let currentDayIndex = 0;
+        let currentTable = null;
+
+        // Initialize the editor
+        function initEditor() {
+            const scheduleTable = document.getElementById('scheduleTable');
+            scheduleTable.innerHTML = '';
+            
+            scheduleData.days.forEach((day, dayIndex) => {
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+                
+                const dayTitle = document.createElement('div');
+                dayTitle.className = 'day-title';
+                dayTitle.textContent = day.title;
+                daySection.appendChild(dayTitle);
+                
+                const table = document.createElement('table');
+                table.dataset.dayIndex = dayIndex;
+                
+                // Create header row
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                
+                day.headers.forEach((header, colIndex) => {
+                    const th = document.createElement('th');
+                    th.className = 'editable';
+                    th.contentEditable = true;
+                    th.textContent = header;
+                    th.dataset.colIndex = colIndex;
+                    
+                    // Add cell controls
+                    const cellControls = document.createElement('div');
+                    cellControls.className = 'cell-controls';
+                    cellControls.innerHTML = '<button class="cell-btn" onclick="deleteColumn(' + colIndex + ', ' + dayIndex + ')">✕</button>';
+                    th.appendChild(cellControls);
+                    
+                    th.addEventListener('click', (e) => {
+                        if (e.target === th) {
+                            handleCellClick(th, dayIndex);
+                        }
+                    });
+                    
+                    headerRow.appendChild(th);
+                });
+                
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                // Create table body
+                const tbody = document.createElement('tbody');
+                
+                day.rows.forEach((row, rowIndex) => {
+                    const tr = document.createElement('tr');
+                    
+                    row.forEach((cell, colIndex) => {
+                        const td = document.createElement('td');
+                        td.className = 'editable';
+                        td.contentEditable = true;
+                        td.textContent = cell;
+                        td.dataset.rowIndex = rowIndex;
+                        td.dataset.colIndex = colIndex;
+                        
+                        // Check if this cell should be highlighted for merging
+                        if (mergeMode) {
+                            const isSelected = cellsToMerge.some(cellCoord => 
+                                cellCoord.dayIndex === dayIndex && 
+                                cellCoord.rowIndex === rowIndex && 
+                                cellCoord.colIndex === colIndex
+                            );
+                            if (isSelected) {
+                                td.classList.add('merge-selected');
+                            }
+                        }
+                        
+                        // Add cell controls
+                        const cellControls = document.createElement('div');
+                        cellControls.className = 'cell-controls';
+                        cellControls.innerHTML = '<button class="cell-btn" onclick="deleteRow(' + rowIndex + ', ' + dayIndex + ')">✕</button>';
+                        td.appendChild(cellControls);
+                        
+                        td.addEventListener('click', (e) => {
+                            if (e.target === td) {
+                                handleCellClick(td, dayIndex);
+                            }
+                        });
+                        
+                        tr.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                table.appendChild(tbody);
+                daySection.appendChild(table);
+                scheduleTable.appendChild(daySection);
+            });
+            
+            // Set current table reference
+            currentTable = document.querySelector('table');
+            currentDayIndex = 0;
+            
+            // Add event listeners for buttons
+            setupEventListeners();
+        }
+
+        // Set up event listeners for control buttons
+        function setupEventListeners() {
+            document.getElementById('addRowBtn').addEventListener('click', addRowBelow);
+            document.getElementById('deleteRowBtn').addEventListener('click', deleteSelectedRow);
+            document.getElementById('addColumnBtn').addEventListener('click', addColumnRight);
+            document.getElementById('deleteColumnBtn').addEventListener('click', deleteSelectedColumn);
+            document.getElementById('mergeCellsBtn').addEventListener('click', startMergeMode);
+            document.getElementById('splitCellsBtn').addEventListener('click', splitCells);
+            document.getElementById('clearSelectionBtn').addEventListener('click', clearSelection);
+            document.getElementById('mergeThemBtn').addEventListener('click', performMerge);
+            document.getElementById('cancelMergeBtn').addEventListener('click', cancelMerge);
+            
+            // Close merge options when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.merge-options') && !e.target.closest('#mergeCellsBtn')) {
+                    hideMergeOptions();
+                }
+            });
+        }
+
+        // Handle cell click
+        function handleCellClick(cell, dayIndex) {
+            if (mergeMode) {
+                // In merge mode, select cells for merging
+                selectForMerge(cell, dayIndex);
+            } else {
+                // Normal selection mode
+                selectCell(cell, dayIndex);
+            }
+        }
+
+        // Select a cell for normal operations
+        function selectCell(cell, dayIndex) {
+            // Clear previous selection if not holding Ctrl key
+            if (!event.ctrlKey) {
+                clearSelection();
+            }
+            
+            cell.classList.add('selected');
+            selectedCells.push({
+                element: cell,
+                dayIndex: dayIndex,
+                rowIndex: parseInt(cell.dataset.rowIndex) || 0,
+                colIndex: parseInt(cell.dataset.colIndex)
+            });
+            
+            currentDayIndex = dayIndex;
+            currentTable = cell.closest('table');
+        }
+
+        // Select a cell for merging
+        function selectForMerge(cell, dayIndex) {
+            const rowIndex = parseInt(cell.dataset.rowIndex) || 0;
+            const colIndex = parseInt(cell.dataset.colIndex);
+            
+            // Check if cell is already selected for merging
+            const isAlreadySelected = cellsToMerge.some(cellCoord => 
+                cellCoord.dayIndex === dayIndex && 
+                cellCoord.rowIndex === rowIndex && 
+                cellCoord.colIndex === colIndex
+            );
+            
+            if (isAlreadySelected) {
+                // Deselect the cell
+                cell.classList.remove('merge-selected');
+                cellsToMerge = cellsToMerge.filter(cellCoord => 
+                    !(cellCoord.dayIndex === dayIndex && 
+                      cellCoord.rowIndex === rowIndex && 
+                      cellCoord.colIndex === colIndex)
+                );
+            } else {
+                // Select the cell
+                cell.classList.add('merge-selected');
+                cellsToMerge.push({
+                    dayIndex: dayIndex,
+                    rowIndex: rowIndex,
+                    colIndex: colIndex
+                });
+            }
+            
+            updateMergeInfo();
+        }
+
+        // Update merge information display
+        function updateMergeInfo() {
+            const mergeInfo = document.getElementById('mergeInfo');
+            if (cellsToMerge.length === 0) {
+                mergeInfo.textContent = 'No cells selected';
+            } else {
+                mergeInfo.textContent = `${cellsToMerge.length} cell(s) selected for merging`;
+            }
+        }
+
+        // Start merge mode
+        function startMergeMode() {
+            mergeMode = true;
+            clearSelection();
+            cellsToMerge = [];
+            
+            // Show merge options
+            const mergeOptions = document.getElementById('mergeOptions');
+            mergeOptions.classList.add('show');
+            
+            // Update instructions
+            updateMergeInfo();
+            
+            // Change button text to indicate merge mode
+            document.getElementById('mergeCellsBtn').textContent = 'Merge Mode Active';
+            document.getElementById('mergeCellsBtn').classList.add('btn-info');
+        }
+
+        // Cancel merge mode
+        function cancelMerge() {
+            mergeMode = false;
+            
+            // Clear merge selections
+            cellsToMerge = [];
+            
+            // Re-render to remove merge highlights
+            initEditor();
+            
+            // Hide merge options
+            hideMergeOptions();
+            
+            // Reset button
+            document.getElementById('mergeCellsBtn').textContent = 'Merge Cells';
+            document.getElementById('mergeCellsBtn').classList.remove('btn-info');
+        }
+
+        // Hide merge options
+        function hideMergeOptions() {
+            document.getElementById('mergeOptions').classList.remove('show');
+        }
+
+        // Perform the actual merge
+        function performMerge() {
+            if (cellsToMerge.length < 2) {
+                alert('Please select at least 2 cells to merge.');
+                return;
+            }
+            
+            // Group cells by day
+            const cellsByDay = {};
+            cellsToMerge.forEach(cellCoord => {
+                if (!cellsByDay[cellCoord.dayIndex]) {
+                    cellsByDay[cellCoord.dayIndex] = [];
+                }
+                cellsByDay[cellCoord.dayIndex].push(cellCoord);
+            });
+            
+            // Merge cells for each day
+            Object.keys(cellsByDay).forEach(dayIndex => {
+                const dayCells = cellsByDay[dayIndex];
+                const dayData = scheduleData.days[dayIndex];
+                
+                // Sort cells by row and column
+                dayCells.sort((a, b) => {
+                    if (a.rowIndex !== b.rowIndex) {
+                        return a.rowIndex - b.rowIndex;
+                    }
+                    return a.colIndex - b.colIndex;
+                });
+                
+                // Collect content from all selected cells
+                let mergedContent = '';
+                dayCells.forEach((cellCoord, index) => {
+                    if (index > 0) mergedContent += ' | ';
+                    mergedContent += dayData.rows[cellCoord.rowIndex][cellCoord.colIndex];
+                });
+                
+                // Update the first cell with merged content
+                const firstCell = dayCells[0];
+                dayData.rows[firstCell.rowIndex][firstCell.colIndex] = mergedContent;
+                
+                // Clear the other cells
+                for (let i = 1; i < dayCells.length; i++) {
+                    const cellCoord = dayCells[i];
+                    dayData.rows[cellCoord.rowIndex][cellCoord.colIndex] = '';
+                }
+            });
+            
+            // Exit merge mode first
+            mergeMode = false;
+            cellsToMerge = [];
+            
+            // Re-render the table
+            initEditor();
+            
+            // Hide merge options
+            hideMergeOptions();
+            
+            // Reset button
+            document.getElementById('mergeCellsBtn').textContent = 'Merge Cells';
+            document.getElementById('mergeCellsBtn').classList.remove('btn-info');
+            
+            alert('Cells merged successfully!');
+        }
+
+        // Clear selection
+        function clearSelection() {
+            selectedCells.forEach(cell => {
+                cell.element.classList.remove('selected');
+            });
+            selectedCells = [];
+        }
+
+        // Add a new row below the selected cell
+        function addRowBelow() {
+            if (selectedCells.length === 0) {
+                alert('Please select a cell to add a row below.');
+                return;
+            }
+            
+            const selectedCell = selectedCells[0];
+            const dayIndex = selectedCell.dayIndex;
+            const rowIndex = selectedCell.rowIndex;
+            const dayData = scheduleData.days[dayIndex];
+            
+            // Create new row in data
+            const newRow = Array(dayData.headers.length).fill('');
+            dayData.rows.splice(rowIndex + 1, 0, newRow);
+            
+            // Re-render the table
+            initEditor();
+        }
+
+        // Delete selected row
+        function deleteSelectedRow() {
+            if (selectedCells.length === 0) return;
+            
+            const dayIndex = selectedCells[0].dayIndex;
+            const rowIndex = selectedCells[0].rowIndex;
+            
+            deleteRow(rowIndex, dayIndex);
+            clearSelection();
+        }
+
+        // Delete a specific row
+        function deleteRow(rowIndex, dayIndex) {
+            const dayData = scheduleData.days[dayIndex];
+            
+            // Remove from data
+            dayData.rows.splice(rowIndex, 1);
+            
+            // Re-render the table
+            initEditor();
+        }
+
+        // Add a new column to the right of the selected cell
+        function addColumnRight() {
+            if (selectedCells.length === 0) {
+                alert('Please select a cell to add a column to the right.');
+                return;
+            }
+            
+            const selectedCell = selectedCells[0];
+            const dayIndex = selectedCell.dayIndex;
+            const colIndex = selectedCell.colIndex;
+            const dayData = scheduleData.days[dayIndex];
+            
+            // Add to headers
+            dayData.headers.splice(colIndex + 1, 0, 'New Column');
+            
+            // Add to each row
+            dayData.rows.forEach(row => {
+                row.splice(colIndex + 1, 0, '');
+            });
+            
+            // Re-render the table
+            initEditor();
+        }
+
+        // Delete selected column
+        function deleteSelectedColumn() {
+            if (selectedCells.length === 0) return;
+            
+            const dayIndex = selectedCells[0].dayIndex;
+            const colIndex = selectedCells[0].colIndex;
+            
+            deleteColumn(colIndex, dayIndex);
+            clearSelection();
+        }
+
+        // Delete a specific column
+        function deleteColumn(colIndex, dayIndex) {
+            const dayData = scheduleData.days[dayIndex];
+            
+            // Remove from headers
+            dayData.headers.splice(colIndex, 1);
+            
+            // Remove from each row
+            dayData.rows.forEach(row => {
+                row.splice(colIndex, 1);
+            });
+            
+            // Re-render the table
+            initEditor();
+        }
+
+        // Split cells (basic implementation)
+        function splitCells() {
+            // This is a simplified implementation
+            // In a real application, you would need to track merged cells
+            alert('Split cells functionality would require tracking merged cell state. This is a basic implementation.');
+        }
+
+        // Download table as PDF
+        function downloadAsPDF() {
+            const button = document.querySelector('.download-btn');
+            const loading = document.getElementById('loading');
+            
+            button.disabled = true;
+            button.textContent = 'Generating...';
+            loading.style.display = 'block';
+            
+            const element = document.getElementById('scheduleTable');
+            
+            html2canvas(element, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false,
+                windowWidth: element.scrollWidth,
+                windowHeight: element.scrollHeight
+            }).then(canvas => {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add additional pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save('AAROHAN_2025_Schedule.pdf');
+                
+                button.disabled = false;
+                button.textContent = '📥 Download Schedule as PDF';
+                loading.style.display = 'none';
+            }).catch(err => {
+                console.error('Error generating PDF:', err);
+                alert('Error generating PDF. Please try again.');
+                button.disabled = false;
+                button.textContent = '📥 Download Schedule as PDF';
+                loading.style.display = 'none';
+            });
+        }
+
+        // Initialize the editor when the page loads
+        document.addEventListener('DOMContentLoaded', initEditor);
+    </script>
+</body>
+</html>
