@@ -329,6 +329,7 @@
                 <button class="btn btn-warning" id="mergeCellsBtn">Merge Cells</button>
                 <button class="btn" id="splitCellsBtn">Split Cells</button>
                 <button class="btn" id="clearSelectionBtn">Clear Selection</button>
+                <button class="btn btn-info" id="undoBtn">↶ Undo</button>
             </div>
         </div>
         
@@ -453,6 +454,58 @@
         let cellsToMerge = [];
         let currentDayIndex = 0;
         let currentTable = null;
+        let historyStack = [];
+        let maxHistorySize = 50;
+
+        // Save current state to history
+        function saveState() {
+            const currentState = JSON.parse(JSON.stringify(scheduleData));
+            historyStack.push(currentState);
+            
+            // Limit history size
+            if (historyStack.length > maxHistorySize) {
+                historyStack.shift();
+            }
+            
+            // Update undo button state
+            updateUndoButton();
+        }
+
+        // Undo last action
+        function undo() {
+            if (historyStack.length === 0) {
+                alert('Nothing to undo!');
+                return;
+            }
+            
+            // Restore previous state
+            const previousState = historyStack.pop();
+            
+            // Deep copy the previous state back
+            scheduleData.days = JSON.parse(JSON.stringify(previousState.days));
+            
+            // Re-render
+            initEditor();
+            
+            // Update undo button state
+            updateUndoButton();
+        }
+
+        // Update undo button appearance
+        function updateUndoButton() {
+            const undoBtn = document.getElementById('undoBtn');
+            if (undoBtn) {
+                if (historyStack.length === 0) {
+                    undoBtn.disabled = true;
+                    undoBtn.style.opacity = '0.5';
+                    undoBtn.style.cursor = 'not-allowed';
+                } else {
+                    undoBtn.disabled = false;
+                    undoBtn.style.opacity = '1';
+                    undoBtn.style.cursor = 'pointer';
+                }
+            }
+        }
 
         // Initialize the editor
         function initEditor() {
@@ -490,6 +543,15 @@
                     
                     // Handle text updates
                     textContainer.addEventListener('input', function() {
+                        // Save state before making changes
+                        if (!textContainer.dataset.statesSaved) {
+                            saveState();
+                            textContainer.dataset.statesSaved = 'true';
+                            // Reset flag after a short delay
+                            setTimeout(() => {
+                                textContainer.dataset.statesSaved = '';
+                            }, 1000);
+                        }
                         day.headers[colIndex] = this.textContent;
                     });
                     
@@ -552,6 +614,15 @@
                         
                         // Handle text updates
                         textContainer.addEventListener('input', function() {
+                            // Save state before making changes
+                            if (!textContainer.dataset.statesSaved) {
+                                saveState();
+                                textContainer.dataset.statesSaved = 'true';
+                                // Reset flag after a short delay
+                                setTimeout(() => {
+                                    textContainer.dataset.statesSaved = '';
+                                }, 1000);
+                            }
                             day.rows[rowIndex][colIndex] = this.textContent;
                         });
                         
@@ -611,6 +682,10 @@
             document.getElementById('clearSelectionBtn').addEventListener('click', clearSelection);
             document.getElementById('mergeThemBtn').addEventListener('click', performMerge);
             document.getElementById('cancelMergeBtn').addEventListener('click', cancelMerge);
+            document.getElementById('undoBtn').addEventListener('click', undo);
+            
+            // Update undo button state on load
+            updateUndoButton();
         }
 
         // Handle cell click
@@ -732,6 +807,9 @@
                 return;
             }
             
+            // Save state before merging
+            saveState();
+            
             // Group cells by day
             const cellsByDay = {};
             cellsToMerge.forEach(cellCoord => {
@@ -814,6 +892,9 @@
                 return;
             }
             
+            // Save state before splitting
+            saveState();
+            
             const selectedCell = selectedCells[0];
             const dayIndex = selectedCell.dayIndex;
             const rowIndex = selectedCell.rowIndex;
@@ -859,6 +940,9 @@
                 return;
             }
             
+            // Save state before adding row
+            saveState();
+            
             const selectedCell = selectedCells[0];
             const dayIndex = selectedCell.dayIndex;
             const rowIndex = selectedCell.rowIndex;
@@ -875,6 +959,9 @@
         // Delete selected row
         function deleteSelectedRow() {
             if (selectedCells.length === 0) return;
+            
+            // Save state before deleting
+            saveState();
             
             const dayIndex = selectedCells[0].dayIndex;
             const rowIndex = selectedCells[0].rowIndex;
@@ -901,6 +988,9 @@
                 return;
             }
             
+            // Save state before adding column
+            saveState();
+            
             const selectedCell = selectedCells[0];
             const dayIndex = selectedCell.dayIndex;
             const colIndex = selectedCell.colIndex;
@@ -921,6 +1011,9 @@
         // Delete selected column
         function deleteSelectedColumn() {
             if (selectedCells.length === 0) return;
+            
+            // Save state before deleting
+            saveState();
             
             const dayIndex = selectedCells[0].dayIndex;
             const colIndex = selectedCells[0].colIndex;
