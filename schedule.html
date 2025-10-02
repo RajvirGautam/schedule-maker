@@ -176,6 +176,12 @@
             font-size: 0.85em;
             line-height: 1.4;
             position: relative;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        td.hidden-cell {
+            display: none;
         }
         
         tr:nth-child(even) {
@@ -224,13 +230,15 @@
         
         .cell-controls {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: 2px;
+            right: 2px;
             display: none;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 2px;
-            border-radius: 0 0 0 5px;
+            border-radius: 3px;
             box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            z-index: 10;
+            pointer-events: auto;
         }
         
         td:hover .cell-controls, th:hover .cell-controls {
@@ -238,16 +246,18 @@
         }
         
         .cell-btn {
-            background: none;
+            background: #e74c3c;
             border: none;
             cursor: pointer;
             font-size: 12px;
-            padding: 2px 5px;
-            color: #004e92;
+            padding: 2px 6px;
+            color: white;
+            border-radius: 2px;
+            pointer-events: auto;
         }
         
         .cell-btn:hover {
-            color: #2a9df4;
+            background: #c0392b;
         }
         
         .merge-options {
@@ -331,7 +341,7 @@
     </div>
 
     <div class="merge-options" id="mergeOptions">
-        <p>Select cells to merge (Ctrl+Click to select multiple):</p>
+        <p>Select cells to merge (Click to select multiple):</p>
         <div class="merge-info" id="mergeInfo">No cells selected</div>
         <div class="control-group">
             <button class="btn btn-success" id="mergeThemBtn">Merge Them</button>
@@ -347,6 +357,8 @@
                     title: "DAY 1 - 10th October 2025",
                     headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
                     rows: [
+                        ["DAY 01", "", "", "", "", "", ""],
+                        ["MORNING EVENTS", "", "", "", "", "", ""],
                         ["09:30 – 11:00", "Registration & Kit Distribution", "", "", "", "", ""],
                         ["10:00 – 11:00", "TRL 1, 2, 3", "Departmental Visits", "", "", "", ""],
                         ["10:15 – 11:20", "Inaugural Session", "", "", "", "", ""],
@@ -360,18 +372,22 @@
                         ["11:30 – 06:00", "", "", "Industry Expo Showcase", "", "", ""],
                         ["11:00 – 03:00", "", "", "", "Roborace & Other Games", "", ""],
                         ["01:00 – 02:00", "Lunch Break (Jury: Dining Hall)", "", "", "", "", ""],
+                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
                         ["02:00 – 03:30", "Prototype Demonstrations (Labs / Exhibition Area)", "", "", "", "", ""],
                         ["03:31 – 03:50", "Expert Talk 1: Moving from TRL 1-3 to TRL 4-6", "", "", "", "", ""],
                         ["03:51 – 04:10", "Expert Talk 2: Challenges in Translating Ideas into Prototypes", "", "", "", "", ""],
                         ["04:11 – 04:20", "Announcements: Best Early-Stage Prototypes", "", "", "", "", ""],
                         ["04:21 – 05:00", "Tea Break & Networking (For All)", "", "", "", "", ""],
                         ["10:00 – 05:00", "", "Departmental Visits", "", "", "", ""]
-                    ]
+                    ],
+                    mergedCells: {}
                 },
                 {
                     title: "DAY 2 - 11th October 2025",
                     headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
                     rows: [
+                        ["DAY 02", "", "", "", "", "", ""],
+                        ["MORNING EVENTS", "", "", "", "", "", ""],
                         ["09:00 – 09:00", "Entry Starts", "", "", "", "", ""],
                         ["09:00 – 10:00", "Registration (New Entrants)", "", "", "", "Registration", ""],
                         ["09:30 – 09:45", "Recap of Day 1 + Welcome to Day 2", "", "", "", "", ""],
@@ -392,6 +408,7 @@
                         ["11:15 – 01:00", "Startup Pitching Sessions 1 & 2", "", "", "", "", ""],
                         ["11:30 – 01:00", "Demonstrations of Functional Prototypes & Lab-Tested Models", "", "", "", "Plenary Sessions (LT)", "Plenary Sessions (LT)"],
                         ["01:00 – 02:00", "Lunch Break", "", "", "", "Lunch Break & Networking (Experts)", ""],
+                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
                         ["02:01 – 03:30", "Prototype Showcase (TRL 7-9)", "", "", "", "", ""],
                         ["02:01 – 03:45", "Startup Pitching Sessions 3 & 4", "", "", "", "", ""],
                         ["02:00 – 02:45", "", "", "", "", "IEEE Inauguration (LT)", ""],
@@ -404,23 +421,28 @@
                         ["04:31 – 04:40", "Awards Announcements: Best TRL 4-6 & TRL 7-9 Prototypes", "", "", "", "", ""],
                         ["04:00 – 05:00", "", "", "", "", "Awards and Vote of Thanks", ""],
                         ["04:41 – 05:00", "Tea Break & Networking", "", "", "", "", ""]
-                    ]
+                    ],
+                    mergedCells: {}
                 },
                 {
                     title: "DAY 3 - 12th October 2025",
                     headers: ["Time", "PRARUPAM", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "CULTURAL EVENING", "INVITED TALKS"],
                     rows: [
+                        ["DAY 03", "", "", "", "", "", ""],
+                        ["MORNING EVENTS", "", "", "", "", "", ""],
                         ["10:00 – 11:00", "", "", "", "Expert Talk (GJ)", "", ""],
                         ["10:00 – 05:00", "TRL 7, 8, 9", "", "", "IEEE Student Conference (LT)", "", ""],
                         ["10:00 – 06:00", "", "Industry Expo Showcase (Basketball Ground)", "", "", "", ""],
                         ["11:00 – 02:00", "", "", "Roborace & Other Games", "", "", ""],
                         ["11:30 – 01:00", "", "", "", "Oral Presentations - Student Conference (LT)", "", ""],
                         ["01:00 – 02:00", "", "", "", "Lunch", "", ""],
+                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
                         ["02:00 – 03:30", "", "", "", "IEEE Poster Presentation (Silveria)", "", ""],
                         ["03:30 – 03:45", "", "", "", "Tea Break", "", ""],
                         ["04:00 – 05:00", "Awards Ceremony: IEEE, Roborace, Prarupam", "", "", "Awards Ceremony: IEEE, Roborace, Prarupam", "", ""],
                         ["05:00 – 08:00", "", "", "", "", "Cultural Evening (Cricket Ground)", ""]
-                    ]
+                    ],
+                    mergedCells: {}
                 }
             ]
         };
@@ -428,7 +450,7 @@
         // State management
         let selectedCells = [];
         let mergeMode = false;
-        let cellsToMerge = []; // Now stores coordinates instead of DOM elements
+        let cellsToMerge = [];
         let currentDayIndex = 0;
         let currentTable = null;
 
@@ -455,10 +477,21 @@
                 
                 day.headers.forEach((header, colIndex) => {
                     const th = document.createElement('th');
-                    th.className = 'editable';
-                    th.contentEditable = true;
-                    th.textContent = header;
                     th.dataset.colIndex = colIndex;
+                    
+                    // Create a text container to avoid clicking on controls
+                    const textContainer = document.createElement('div');
+                    textContainer.contentEditable = true;
+                    textContainer.textContent = header;
+                    textContainer.style.cssText = 'outline: none; width: 100%; min-height: 20px;';
+                    
+                    // Prevent the header itself from being editable
+                    th.contentEditable = false;
+                    
+                    // Handle text updates
+                    textContainer.addEventListener('input', function() {
+                        day.headers[colIndex] = this.textContent;
+                    });
                     
                     // Add cell controls
                     const cellControls = document.createElement('div');
@@ -466,8 +499,10 @@
                     cellControls.innerHTML = '<button class="cell-btn" onclick="deleteColumn(' + colIndex + ', ' + dayIndex + ')">✕</button>';
                     th.appendChild(cellControls);
                     
+                    th.appendChild(textContainer);
+                    
                     th.addEventListener('click', (e) => {
-                        if (e.target === th) {
+                        if (e.target === th || e.target === textContainer) {
                             handleCellClick(th, dayIndex);
                         }
                     });
@@ -485,12 +520,40 @@
                     const tr = document.createElement('tr');
                     
                     row.forEach((cell, colIndex) => {
+                        // Check if this cell is hidden due to a merge
+                        const cellKey = `${rowIndex}-${colIndex}`;
+                        if (day.mergedCells[cellKey] && day.mergedCells[cellKey].hidden) {
+                            return; // Skip hidden cells
+                        }
+                        
                         const td = document.createElement('td');
                         td.className = 'editable';
                         td.contentEditable = true;
-                        td.textContent = cell;
                         td.dataset.rowIndex = rowIndex;
                         td.dataset.colIndex = colIndex;
+                        td.dataset.dayIndex = dayIndex;
+                        
+                        // Check if this cell is the main cell of a merge
+                        if (day.mergedCells[cellKey]) {
+                            const merge = day.mergedCells[cellKey];
+                            if (merge.rowspan) td.rowSpan = merge.rowspan;
+                            if (merge.colspan) td.colSpan = merge.colspan;
+                            td.classList.add('merged');
+                        }
+                        
+                        // Create a text container to avoid clicking on controls
+                        const textContainer = document.createElement('div');
+                        textContainer.contentEditable = true;
+                        textContainer.textContent = cell;
+                        textContainer.style.cssText = 'outline: none; width: 100%; height: 100%; min-height: 20px;';
+                        
+                        // Prevent the cell itself from being editable
+                        td.contentEditable = false;
+                        
+                        // Handle text updates
+                        textContainer.addEventListener('input', function() {
+                            day.rows[rowIndex][colIndex] = this.textContent;
+                        });
                         
                         // Check if this cell should be highlighted for merging
                         if (mergeMode) {
@@ -510,8 +573,10 @@
                         cellControls.innerHTML = '<button class="cell-btn" onclick="deleteRow(' + rowIndex + ', ' + dayIndex + ')">✕</button>';
                         td.appendChild(cellControls);
                         
+                        td.appendChild(textContainer);
+                        
                         td.addEventListener('click', (e) => {
-                            if (e.target === td) {
+                            if (e.target === td || e.target === textContainer) {
                                 handleCellClick(td, dayIndex);
                             }
                         });
@@ -546,13 +611,6 @@
             document.getElementById('clearSelectionBtn').addEventListener('click', clearSelection);
             document.getElementById('mergeThemBtn').addEventListener('click', performMerge);
             document.getElementById('cancelMergeBtn').addEventListener('click', cancelMerge);
-            
-            // Close merge options when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.merge-options') && !e.target.closest('#mergeCellsBtn')) {
-                    hideMergeOptions();
-                }
-            });
         }
 
         // Handle cell click
@@ -649,8 +707,6 @@
         // Cancel merge mode
         function cancelMerge() {
             mergeMode = false;
-            
-            // Clear merge selections
             cellsToMerge = [];
             
             // Re-render to remove merge highlights
@@ -698,39 +754,94 @@
                     return a.colIndex - b.colIndex;
                 });
                 
+                // Calculate the span
+                const minRow = Math.min(...dayCells.map(c => c.rowIndex));
+                const maxRow = Math.max(...dayCells.map(c => c.rowIndex));
+                const minCol = Math.min(...dayCells.map(c => c.colIndex));
+                const maxCol = Math.max(...dayCells.map(c => c.colIndex));
+                
+                const rowspan = maxRow - minRow + 1;
+                const colspan = maxCol - minCol + 1;
+                
                 // Collect content from all selected cells
                 let mergedContent = '';
-                dayCells.forEach((cellCoord, index) => {
-                    if (index > 0) mergedContent += ' | ';
-                    mergedContent += dayData.rows[cellCoord.rowIndex][cellCoord.colIndex];
+                dayCells.forEach((cellCoord) => {
+                    const cellContent = dayData.rows[cellCoord.rowIndex][cellCoord.colIndex];
+                    if (cellContent && cellContent.trim() !== '') {
+                        if (mergedContent !== '') mergedContent += ' | ';
+                        mergedContent += cellContent;
+                    }
                 });
                 
-                // Update the first cell with merged content
-                const firstCell = dayCells[0];
-                dayData.rows[firstCell.rowIndex][firstCell.colIndex] = mergedContent;
+                // If no content was found, use a default message
+                if (mergedContent === '') {
+                    mergedContent = 'Merged Cell';
+                }
                 
-                // Clear the other cells
-                for (let i = 1; i < dayCells.length; i++) {
-                    const cellCoord = dayCells[i];
-                    dayData.rows[cellCoord.rowIndex][cellCoord.colIndex] = '';
+                // Update the first cell with merged content and span info
+                const firstCellKey = `${minRow}-${minCol}`;
+                dayData.rows[minRow][minCol] = mergedContent;
+                
+                // Store merge information
+                dayData.mergedCells[firstCellKey] = {
+                    rowspan: rowspan,
+                    colspan: colspan
+                };
+                
+                // Mark other cells as hidden
+                for (let r = minRow; r <= maxRow; r++) {
+                    for (let c = minCol; c <= maxCol; c++) {
+                        if (r !== minRow || c !== minCol) {
+                            const cellKey = `${r}-${c}`;
+                            dayData.mergedCells[cellKey] = { hidden: true };
+                            // Clear the content
+                            dayData.rows[r][c] = '';
+                        }
+                    }
                 }
             });
             
-            // Exit merge mode first
-            mergeMode = false;
-            cellsToMerge = [];
-            
-            // Re-render the table
-            initEditor();
-            
-            // Hide merge options
-            hideMergeOptions();
-            
-            // Reset button
-            document.getElementById('mergeCellsBtn').textContent = 'Merge Cells';
-            document.getElementById('mergeCellsBtn').classList.remove('btn-info');
+            // Exit merge mode and re-render
+            cancelMerge();
             
             alert('Cells merged successfully!');
+        }
+
+        // Split merged cells
+        function splitCells() {
+            if (selectedCells.length === 0) {
+                alert('Please select a merged cell to split.');
+                return;
+            }
+            
+            const selectedCell = selectedCells[0];
+            const dayIndex = selectedCell.dayIndex;
+            const rowIndex = selectedCell.rowIndex;
+            const colIndex = selectedCell.colIndex;
+            const dayData = scheduleData.days[dayIndex];
+            
+            const cellKey = `${rowIndex}-${colIndex}`;
+            
+            if (!dayData.mergedCells[cellKey] || dayData.mergedCells[cellKey].hidden) {
+                alert('Selected cell is not a merged cell.');
+                return;
+            }
+            
+            const merge = dayData.mergedCells[cellKey];
+            const rowspan = merge.rowspan || 1;
+            const colspan = merge.colspan || 1;
+            
+            // Remove merge information for all affected cells
+            for (let r = rowIndex; r < rowIndex + rowspan; r++) {
+                for (let c = colIndex; c < colIndex + colspan; c++) {
+                    const key = `${r}-${c}`;
+                    delete dayData.mergedCells[key];
+                }
+            }
+            
+            // Re-render
+            initEditor();
+            alert('Cell split successfully!');
         }
 
         // Clear selection
@@ -832,13 +943,6 @@
             
             // Re-render the table
             initEditor();
-        }
-
-        // Split cells (basic implementation)
-        function splitCells() {
-            // This is a simplified implementation
-            // In a real application, you would need to track merged cells
-            alert('Split cells functionality would require tracking merged cell state. This is a basic implementation.');
         }
 
         // Download table as PDF
