@@ -353,100 +353,93 @@
     <script>
         // Data structure for the schedule based on the PDF
         const scheduleData = {
-            days: [
-                {
-                    title: "DAY 1 - 10th October 2025",
-                    headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
-                    rows: [
-                        ["DAY 01", "", "", "", "", "", ""],
-                        ["MORNING EVENTS", "", "", "", "", "", ""],
-                        ["09:30 – 11:00", "Registration & Kit Distribution", "", "", "", "", ""],
-                        ["10:00 – 11:00", "TRL 1, 2, 3", "Departmental Visits", "", "", "", ""],
-                        ["10:15 – 11:20", "Inaugural Session", "", "", "", "", ""],
-                        ["10:15 – 10:30", "Lamp Lighting", "", "", "", "", ""],
-                        ["10:31 – 10:41", "Address by Director", "", "", "", "", ""],
-                        ["10:42 – 11:07", "Keynote Talk: Journey from Idea to Prototype", "", "", "", "", ""],
-                        ["11:08 – 11:18", "Chief Guest Address", "", "", "", "", ""],
-                        ["11:21 – 11:41", "Tea / Coffee Networking (Guests Only)", "", "", "", "", ""],
-                        ["11:30 – 01:00", "Poster Display & Concept Presentations", "", "", "", "", ""],
-                        ["11:00 – 11:30", "", "", "Expo Inauguration", "", "", ""],
-                        ["11:30 – 06:00", "", "", "Industry Expo Showcase", "", "", ""],
-                        ["11:00 – 03:00", "", "", "", "Roborace & Other Games", "", ""],
-                        ["01:00 – 02:00", "Lunch Break (Jury: Dining Hall)", "", "", "", "", ""],
-                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
-                        ["02:00 – 03:30", "Prototype Demonstrations (Labs / Exhibition Area)", "", "", "", "", ""],
-                        ["03:31 – 03:50", "Expert Talk 1: Moving from TRL 1-3 to TRL 4-6", "", "", "", "", ""],
-                        ["03:51 – 04:10", "Expert Talk 2: Challenges in Translating Ideas into Prototypes", "", "", "", "", ""],
-                        ["04:11 – 04:20", "Announcements: Best Early-Stage Prototypes", "", "", "", "", ""],
-                        ["04:21 – 05:00", "Tea Break & Networking (For All)", "", "", "", "", ""],
-                        ["10:00 – 05:00", "", "Departmental Visits", "", "", "", ""]
-                    ],
-                    mergedCells: {}
-                },
-                {
-                    title: "DAY 2 - 11th October 2025",
-                    headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "INVITED TALKS"],
-                    rows: [
-                        ["DAY 02", "", "", "", "", "", ""],
-                        ["MORNING EVENTS", "", "", "", "", "", ""],
-                        ["09:00 – 09:00", "Entry Starts", "", "", "", "", ""],
-                        ["09:00 – 10:00", "Registration (New Entrants)", "", "", "", "Registration", ""],
-                        ["09:30 – 09:45", "Recap of Day 1 + Welcome to Day 2", "", "", "", "", ""],
-                        ["09:45 – 10:15", "Keynote Talk: Scaling Innovations", "", "", "", "", ""],
-                        ["10:00 – 10:15", "Inauguration (Investors Connect)", "", "", "", "", ""],
-                        ["10:00 – 10:45", "", "", "", "", "Inauguration (GJ)", ""],
-                        ["10:00 – 11:00", "", "", "", "", "Inauguration Ceremony", ""],
-                        ["10:15 – 10:30", "Address by Chairman, Institute Innovation Council", "", "", "", "", ""],
-                        ["10:16 – 10:26", "Address by Director", "", "", "", "", ""],
-                        ["10:27 – 10:37", "Address by CEO, SIF", "", "", "", "", ""],
-                        ["10:30 – 11:00", "Tea Break", "", "", "", "", ""],
-                        ["10:38 – 11:14", "Tea Break (Investors Connect)", "", "", "", "", ""],
-                        ["10:00 – 05:00", "TRL 4, 5, 6", "Departmental Visits", "", "", "", ""],
-                        ["10:00 – 06:00", "", "", "Industry Expo Showcase", "", "", ""],
-                        ["11:00 – 06:00", "", "", "Industry Expo Showcase (Basketball Ground)", "", "", ""],
-                        ["11:00 – 11:45", "", "", "", "", "High Tea (GJ)", ""],
-                        ["11:00 – 03:00", "", "", "", "Roborace & Other Games", "", ""],
-                        ["11:15 – 01:00", "Startup Pitching Sessions 1 & 2", "", "", "", "", ""],
-                        ["11:30 – 01:00", "Demonstrations of Functional Prototypes & Lab-Tested Models", "", "", "", "Plenary Sessions (LT)", "Plenary Sessions (LT)"],
-                        ["01:00 – 02:00", "Lunch Break", "", "", "", "Lunch Break & Networking (Experts)", ""],
-                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
-                        ["02:01 – 03:30", "Prototype Showcase (TRL 7-9)", "", "", "", "", ""],
-                        ["02:01 – 03:45", "Startup Pitching Sessions 3 & 4", "", "", "", "", ""],
-                        ["02:00 – 02:45", "", "", "", "", "IEEE Inauguration (LT)", ""],
-                        ["02:00 – 05:00", "", "", "", "", "IEEE Events + Student Conference", ""],
-                        ["03:00 – 05:00", "Panel Discussion: Startup Opportunities in Defence & Space-Tech", "", "", "", "", ""],
-                        ["03:31 – 04:30", "Panel Discussion: Startup Opportunities in Agri-Tech, Clean-Tech & Sustainability", "", "", "", "", ""],
-                        ["03:46 – 04:15", "Tea Break (Investors Connect)", "", "", "", "", ""],
-                        ["03:30 – 03:45", "", "", "", "", "Tea Break", ""],
-                        ["04:00 – 05:30", "One-on-One Interaction: Startups & Investors", "", "", "", "", ""],
-                        ["04:31 – 04:40", "Awards Announcements: Best TRL 4-6 & TRL 7-9 Prototypes", "", "", "", "", ""],
-                        ["04:00 – 05:00", "", "", "", "", "Awards and Vote of Thanks", ""],
-                        ["04:41 – 05:00", "Tea Break & Networking", "", "", "", "", ""]
-                    ],
-                    mergedCells: {}
-                },
-                {
-                    title: "DAY 3 - 12th October 2025",
-                    headers: ["Time", "PRARUPAM", "INDUSTRY EXPO", "ROBORACE", "STUDENT CONFERENCE", "CULTURAL EVENING", "INVITED TALKS"],
-                    rows: [
-                        ["DAY 03", "", "", "", "", "", ""],
-                        ["MORNING EVENTS", "", "", "", "", "", ""],
-                        ["10:00 – 11:00", "", "", "", "Expert Talk (GJ)", "", ""],
-                        ["10:00 – 05:00", "TRL 7, 8, 9", "", "", "IEEE Student Conference (LT)", "", ""],
-                        ["10:00 – 06:00", "", "Industry Expo Showcase (Basketball Ground)", "", "", "", ""],
-                        ["11:00 – 02:00", "", "", "Roborace & Other Games", "", "", ""],
-                        ["11:30 – 01:00", "", "", "", "Oral Presentations - Student Conference (LT)", "", ""],
-                        ["01:00 – 02:00", "", "", "", "Lunch", "", ""],
-                        ["AFTERNOON SESSION", "", "", "", "", "", ""],
-                        ["02:00 – 03:30", "", "", "", "IEEE Poster Presentation (Silveria)", "", ""],
-                        ["03:30 – 03:45", "", "", "", "Tea Break", "", ""],
-                        ["04:00 – 05:00", "Awards Ceremony: IEEE, Roborace, Prarupam", "", "", "Awards Ceremony: IEEE, Roborace, Prarupam", "", ""],
-                        ["05:00 – 08:00", "", "", "", "", "Cultural Evening (Cricket Ground)", ""]
-                    ],
-                    mergedCells: {}
-                }
-            ]
-        };
+    days: [
+        {
+            title: "DAY 1 - 10th October 2025",
+            headers: ["Time", "PRARUPAM", "OPEN SCIENCE DAY"],
+            rows: [
+                ["DAY 01", "", ""],
+                ["MORNING EVENTS", "", ""],
+                ["09:30 – 11:00", "Registration & Kit Distribution", ""],
+                ["10:15", "Inaugural Session Starts", ""],
+                ["10:15 – 10:30", "Lamp Lighting", ""],
+                ["10:31 – 10:41", "Address by Director", "Departmental Visits"],
+                ["10:42 – 11:07", "Keynote Talk: Journey from Idea to Prototype", ""],
+                ["11:08 – 11:18", "Chief Guest Address", ""],
+                ["11:21 – 11:41", "Tea / Coffee Networking (Guests Only)", ""],
+                ["", "Prototype Showcase (Session I – Posters & Concept Pitches)", ""],
+                ["11:30 – 01:00", "Poster Display & Concept Presentations + Jury Walkthrough", ""],
+                ["01:00 – 02:00", "Lunch Break (Jury: Dining Hall)", ""],
+                ["AFTERNOON SESSION", "", ""],
+                ["02:00 – 03:30", "Prototype Demonstrations (Labs / Exhibition Area)", ""],
+                ["03:31 – 03:50", "Expert Talk 1: Moving from TRL 1-3 to TRL 4-6", ""],
+                ["03:51 – 04:10", "Expert Talk 2: Challenges in Translating Ideas into Prototypes", ""],
+                ["04:11 – 04:20", "Announcements: Best Early-Stage Prototypes (Category Awards)", ""],
+                ["04:21 – 05:00", "Tea Break & Networking (For All)", ""]
+            ],
+            mergedCells: {}
+        },
+        {
+            title: "DAY 2 - 11th October 2025",
+            headers: ["Time", "PRARUPAM", "STUDENT CONFERENCE", "OPEN SCIENCE DAY", "INDUSTRY EXPO", "INVITED TALKS", "ROBORACE"],
+            rows: [
+                ["DAY 02", "", "", "", "", "", ""],
+                ["MORNING EVENTS", "", "", "", "", "", ""],
+                ["09:00", "Entry Starts", "Registration", "", "", "", ""],
+                ["09:00 – 11:00", "Registration (New Entrants)", "", "", "", "", ""],
+                ["09:30 – 09:45", "Recap of Day 1 + Welcome to Day 2", "", "", "", "", ""],
+                ["09:45 – 10:15", "Keynote Talk - Scaling Innovations: From Lab to Market", "", "", "", "", ""],
+                ["10:00", "", "Inauguration", "", "Inaugration", "", ""],
+                ["10:15 – 10:30", "Address by Chairman, Institute Innovation Council", "", "", "", "", ""],
+                ["10:30", "", "", "", "Expo", "", ""],
+                ["10:45", "", "Inaugration ends", "", "", "", ""],
+                ["10:30 – 11:00", "Tea Break", "", "", "", "", ""],
+                ["11:00 - 11:45", "", "High tea", "", "", "", ""],
+                ["11:00", "Prototype Showcase (Session II – TRL 4-6)", "", "", "", "Inauguration", "ROBORACE"],
+                ["11:30 – 01:00", "Demonstrations of Functional Prototypes & Lab-Tested Models", "Plenary Sessions", "", "", "Plenary Sessions", ""],
+                ["01:00", "Lunch Break", "Lunch Break & Networking", "", "", "", ""],
+                ["01:30", "", "", "", "", "Plenary Sessions end", ""],
+                ["AFTERNOON SESSION", "", "", "", "", "", ""],
+                ["02:00", "", "", "", "", "", ""],
+                ["02:00 - 02:45", "", "Inauguration IEEE", "", "", "", ""],
+                ["02:00 – 03:30", "Prototype Showcase (TRL 7-9)", "", "", "", "", ""],
+                ["03:00", "", "Oral Sessions", "", "", "", "ROBORACE ENDS"],
+                ["03:30 – 04:30", "Panel Discussion: Startup Opportunities in Agri-Tech, Clean-Tech & Sustainability", "", "", "", "", ""],
+                ["04:30 – 04:40", "Awards Announcements: Best TRL 4-6 & TRL 7-9 Prototypes", "", "", "", "", ""],
+                ["04:40 – 04:45", "Vote of Thanks and Closing", "", "", "", "", ""],
+                ["04:45 – 05:00", "Tea Break & Networking", "Oral Sessions ends", "", "", "", ""],
+                ["06:00", "", "", "", "Expo ends", "", ""]
+            ],
+            mergedCells: {}
+        },
+        {
+            title: "DAY 3 - 12th October 2025",
+            headers: ["Time", "PRARUPAM", "STUDENT CONFERENCE", "INDUSTRY EXPO", "ROBORACE", "CULTURAL NIGHT"],
+            rows: [
+                ["DAY 03", "", "", "", "", ""],
+                ["MORNING EVENTS", "", "", "", "", ""],
+                ["10:00 – 10:15", "Inauguration", "Expert Talks", "Expo Starts", "", ""],
+                ["10:15 – 10:25", "Address by Director", "", "", "", ""],
+                ["10:25 – 10:35", "Address by CEO - SIF", "", "", "", ""],
+                ["10:35 – 11:15", "Tea Break", "", "", "", ""],
+                ["11:00", "", "Expert talks end", "", "Roborace starts", ""],
+                ["11:00-11:15", "", "High Tea", "", "", ""],
+                ["11:15 – 01:00", "Startup Pitching Sessions 1 & 2", "", "", "", ""],
+                ["11:30 - 01:00", "", "Oral Presentations", "", "", ""],
+                ["01:00 – 02:00", "Lunch Break", "Lunch", "", "Roborace Ends", ""],
+                ["AFTERNOON SESSION", "", "", "", "", ""],
+                ["02:00 – 03:45", "Startup Pitching Sessions 3 & 4", "IEEE Poster Presentation", "", "", ""],
+                ["03:30 – 03:45", "", "Tea Break", "", "", ""],
+                ["03:45 – 04:15", "Tea Break", "", "", "", ""],
+                ["04:00 – 05:30", "One-On-One Interaction: Startups & Investors", "", "", "", ""],
+                ["03:00 – 05:00", "Parallel Panel Discussion: 'Startup Opportunities in Defence & Space Tech'", "", "Expo Ends", "", ""],
+                ["04:00 – 05:00", "Awards Ceremony: IEEE, Roborace, Paruppam", "Awards & Vote of Thanks", "", "", ""],
+                ["05:00 – 08:00", "", "", "", "", "Cultural Night"]
+            ],
+            mergedCells: {}
+        }
+    ]
+};
 
         // State management
         let selectedCells = [];
